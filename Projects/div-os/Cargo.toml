@@ -1,0 +1,18 @@
+[package]
+name = "div-os"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+bootloader="0.9"
+volatile="0.2.6"
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+
+[target.'cfg(target_os="none")']
+runner="bootimage runner"
+
+[package.metadata.bootimage]
