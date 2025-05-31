@@ -14,7 +14,7 @@ pub extern "C" fn _start() -> ! {
     //this function is the entry point since the linker looks for a function named
     //'_start' by default
 
-    println!("Hello World{}","!");
+    vga_buffer::print_something();
 
     loop{}
 }
@@ -23,7 +23,6 @@ pub extern "C" fn _start() -> ! {
 //this function is called upon panic
 #[panic_handler]
 fn panic(_info: &PanicInfo) -> ! {
-    println!("{}",info);
     loop{}
 }
 
