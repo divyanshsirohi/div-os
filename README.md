@@ -72,7 +72,7 @@ I'm currently looking for opportunities where I can contribute to low-level, per
 
 Feel free to reach out if you're hiring or just want to chat about systems programming!
 
-- 🔗 LinkedIn: [linkedin.com/in/divyanshsirohi]([https://linkedin.com/in/YOURUSERNAME](https://www.linkedin.com/in/divyansh-sirohi-796aa824a/))
+- 🔗 LinkedIn: [linkedin.com/in/divyanshsirohi](https://www.linkedin.com/in/divyansh-sirohi-796aa824a/)
 
 # 💡 Motivation & Learning
 
