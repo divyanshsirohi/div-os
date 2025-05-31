@@ -60,6 +60,7 @@ rustup component add rust-src llvm-tools-preview
 cargo install cargo-xbuild bootimage
 cargo bootimage
 qemu-system-x86_64 -drive format=raw,file=target/x86_64-custom/debug/bootimage-div_os.bin
+```
 
 # 👤 About Me
 
