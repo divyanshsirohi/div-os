@@ -1,5 +1,6 @@
 # Rust build artifacts
 /target
+**/target
 Cargo.lock
 
 # IDE files
@@ -8,6 +9,7 @@ Cargo.lock
 *.swp
 *.swo
 *~
+*.code-workspace
 
 # OS files
 .DS_Store
@@ -16,7 +18,15 @@ Thumbs.db
 # Debug files
 *.log
 *.tmp
+qemu.log
 
 # QEMU files
-*.bin
-*.elf
+*.img
+
+# Backup files
+*.bak
+*.orig
+
+# Rust specific
+**/*.rs.bk
+.cargo/config.toml.orig

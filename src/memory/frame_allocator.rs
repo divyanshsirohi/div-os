@@ -17,8 +17,8 @@ const MAX_FRAMES: usize = (128 * 1024 * 1024) / FRAME_SIZE;
 static FRAME_BITMAP: Mutex<[u64; MAX_FRAMES / 64]> = Mutex::new([0; MAX_FRAMES / 64]);
 
 /// Start of allocatable physical memory
-static mut PHYS_MEM_START: usize = 0;
-static mut PHYS_MEM_END: usize = 0;
+static PHYS_MEM_START: Mutex<usize> = Mutex::new(0);
+static PHYS_MEM_END: Mutex<usize> = Mutex::new(0);
 
 /// Physical address wrapper
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
@@ -114,29 +114,30 @@ pub fn init() {
         static _kernel_end: u8;
     }
 
-    unsafe {
-        // Physical memory starts after kernel
-        let kernel_end = &_kernel_end as *const u8 as usize;
-        PHYS_MEM_START = align_up(kernel_end, FRAME_SIZE);
-        
-        // Assume 128MB of RAM (QEMU default)
-        PHYS_MEM_END = 0x8000_0000 + (128 * 1024 * 1024);
+    // Physical memory starts after kernel
+    let kernel_end = unsafe { &_kernel_end as *const u8 as usize };
+    let phys_start = align_up(kernel_end, FRAME_SIZE);
+    
+    // Assume 128MB of RAM (QEMU default)
+    let phys_end = 0x8000_0000 + (128 * 1024 * 1024);
 
-        let total_frames = (PHYS_MEM_END - PHYS_MEM_START) / FRAME_SIZE;
+    *PHYS_MEM_START.lock() = phys_start;
+    *PHYS_MEM_END.lock() = phys_end;
 
-        println!("[FRAME] Initializing frame allocator:");
-        println!("  Kernel end: {:#x}", kernel_end);
-        println!("  Phys start: {:#x}", PHYS_MEM_START);
-        println!("  Phys end:   {:#x}", PHYS_MEM_END);
-        println!("  Total frames: {}", total_frames);
+    let total_frames = (phys_end - phys_start) / FRAME_SIZE;
 
-        // Mark all frames as free
-        let mut bitmap = FRAME_BITMAP.lock();
-        for i in 0..total_frames.min(MAX_FRAMES) {
-            let word_index = i / 64;
-            let bit_index = i % 64;
-            bitmap[word_index] |= 1 << bit_index;
-        }
+    println!("[FRAME] Initializing frame allocator:");
+    println!("  Kernel end: {:#x}", kernel_end);
+    println!("  Phys start: {:#x}", phys_start);
+    println!("  Phys end:   {:#x}", phys_end);
+    println!("  Total frames: {}", total_frames);
+
+    // Mark all frames as free
+    let mut bitmap = FRAME_BITMAP.lock();
+    for i in 0..total_frames.min(MAX_FRAMES) {
+        let word_index = i / 64;
+        let bit_index = i % 64;
+        bitmap[word_index] |= 1 << bit_index;
     }
 }
 
