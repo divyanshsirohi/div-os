@@ -13,7 +13,8 @@
 
 #![no_std]
 #![no_main]
-#![feature(alloc_error_handler)]
+#![feature(naked_functions)]
+#![feature(asm_const)]
 
 extern crate alloc;
 

@@ -1,23 +1,26 @@
 [package]
 name = "div-os"
-version = "0.1.0"
-edition = "2018"
+version = "0.2.0"
+edition = "2021"
+authors = ["Divyansh Sirohi"]
 
 [dependencies]
-bootloader="0.9"
-volatile="0.2.6"
-spin = "0.5.2"
-[dependencies.lazy_static]
-version="1.0"
-features = ["spin_no_std"]
+# Basic synchronization primitives
+spin = "0.9"
+
+# Lazy static initialization
+lazy_static = { version = "1.4", features = ["spin_no_std"] }
+
+# Bit manipulation
+bitflags = "2.4"
+
+# RISC-V low-level access
+riscv = "0.10"
 
 [profile.dev]
 panic = "abort"
 
 [profile.release]
 panic = "abort"
-
-[target.'cfg(target_os="none")']
-runner="bootimage runner"
-
-[package.metadata.bootimage]
+lto = true
+opt-level = "z"
