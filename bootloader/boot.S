@@ -42,7 +42,11 @@ clear_bss_done:
     # Point stvec to our trap handler
     la t0, _trap_vector
     csrw stvec, t0
-    
+       
+    # DEBUG TEST — write directly to UART
+    #li t0, 0x10000000     # QEMU virt UART address
+    #li t1, 'A'            # ASCII character
+    #sb t1, 0(t0)          # send byte to UART
     # Jump to Rust kernel main
     call kernel_main
     

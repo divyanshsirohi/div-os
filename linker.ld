@@ -14,7 +14,7 @@ MEMORY
     /* QEMU virt machine has RAM starting at 0x80000000 
      * We load kernel at 0x80200000 to leave space for bootloader/SBI
      */
-    RAM : ORIGIN = 0x80200000, LENGTH = 128M
+  RAM : ORIGIN = 0x80000000, LENGTH = 128M
 }
 
 SECTIONS
